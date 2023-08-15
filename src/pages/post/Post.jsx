@@ -6,8 +6,10 @@ import { useParams } from 'react-router-dom';
 
 export default function Post() {
   const headref = useRef(null);
+  const headref2 = useRef(null);
   const [data, setData] = useState(null);
   const { id } = useParams();
+
   useEffect(() => {
     console.log(id);
     api.get(`group/${id}`, { withCredentials: true }).then((res) => {
@@ -15,17 +17,23 @@ export default function Post() {
       setData(res.data);
     });
   }, []);
+
   const handleScroll = () => {
     const style = headref.current.style;
+    const style2 = headref2.current.style;
     console.log(window.scrollY);
 
     if (window.scrollY > 113 && style) {
-      style.height = '93px';
-      style.maxWidth = '428px';
-      style.position = 'fixed';
-      style.top = '0';
-      style.backgroundColor = '#555';
+      style.display = 'none';
+      style2.height = '93px';
+      style2.maxWidth = '428px';
+      style2.position = 'fixed';
+      style2.top = '0';
+      style2.backgroundColor = '#555';
+      style2.display = 'flex';
     } else if (style) {
+      style2.display = 'none';
+      style.display = 'block';
       style.position = '';
       style.height = '206px';
       style.backgroundColor = '';
@@ -43,12 +51,13 @@ export default function Post() {
     <Wrap>
       <div
         style={{
-          position: 'sticky',
+          position: 'relative',
         }}
       >
         <Head ref={headref} data={data}>
           <div>Head</div>
         </Head>
+        <Head2 ref={headref2}>{data?.groupNmae}</Head2>
         <Side>
           <div>Side</div>
         </Side>
@@ -112,6 +121,7 @@ const Head = styled.div`
     color: white;
   }
 `;
+const Head2 = styled.div``;
 const Side = styled.div`
   display: ${(prop) => prop.head};
   width: 100%;

@@ -52,6 +52,7 @@ function PostWrite() {
             theme='underLine'
             placeholder='제목을 적어주세요'
             bordercolor='#DDDDDD'
+            color='#4C4C4C'
           />
         </div>
         <div style={{ marginTop: '28px' }}>
@@ -59,7 +60,6 @@ function PostWrite() {
             height='40.6vh'
             bgcolor='#D7D7D7'
             onImageChange={changeHandler}
-            color='white'
           >
             사진 추가하기
           </WriteImageUpload>

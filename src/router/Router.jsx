@@ -12,6 +12,7 @@ import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 import PasswordChange from '../pages/mypage/PasswordChange.jsx';
 import Post from '../pages/post/Post.jsx';
 import GroupEdit from '../pages/group/GroupEdit.jsx';
+import Test from '../pages/post/Test.jsx';
 
 const Router = () => {
   return (
@@ -28,8 +29,9 @@ const Router = () => {
         <Route path='/postwrite/:id' element={<PostWrite />} />
         <Route path='/mypage' element={<MyPage />} />
         <Route path='/pwchange' element={<PasswordChange />} />
-        <Route path='/post' element={<Post />} />
+        <Route path='/post/:id' element={<Post />} />
         <Route path='/groupedit/:id' element={<GroupEdit />} />
+        <Route path='/test/:id' element={<Test />} />
       </Routes>
     </BrowserRouter>
   );

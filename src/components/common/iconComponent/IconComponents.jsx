@@ -120,6 +120,59 @@ const icons = {
       />
     </>
   ),
+  vectorLeft: (
+    <>
+      <path
+        d='M9.72518 1L1.20979 9.51538C1.14357 9.57754 1.09078 9.65261 1.0547 9.73596C1.01862 9.81931 1 9.90917 1 10C1 10.0908 1.01862 10.1807 1.0547 10.264C1.09078 10.3474 1.14357 10.4225 1.20979 10.4846L9.72518 19'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </>
+  ),
+  vectorRight: (
+    <>
+      <path
+        d='M0.999994 14L7.15 7.85C7.19783 7.80511 7.23595 7.75089 7.26201 7.69069C7.28807 7.6305 7.30151 7.5656 7.30151 7.5C7.30151 7.4344 7.28807 7.3695 7.26201 7.30931C7.23595 7.24911 7.19783 7.19489 7.15 7.15L0.999996 0.999999'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </>
+  ),
+  camera: (
+    <>
+      <path
+        d='M12.3027 7.63477V13.5322'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M9.35547 10.583H15.2529'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M24 6.30769C24 5.83846 23.8136 5.38845 23.4818 5.05666C23.15 4.72486 22.7 4.53846 22.2308 4.53846H18.6923L16.0385 1H8.96154L6.30769 4.53846H2.76923C2.3 4.53846 1.84999 4.72486 1.5182 5.05666C1.1864 5.38845 1 5.83846 1 6.30769V16.9231C1 17.3923 1.1864 17.8423 1.5182 18.1741C1.84999 18.5059 2.3 18.6923 2.76923 18.6923H22.2308C22.7 18.6923 23.15 18.5059 23.4818 18.1741C23.8136 17.8423 24 17.3923 24 16.9231V6.30769Z'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </>
+  ),
+  inviteFriends: (
+    <>
+      <path
+        d='M14 8.5V13C14 13.2652 13.8946 13.5196 13.7071 13.7071C13.5196 13.8946 13.2652 14 13 14H2C1.73478 14 1.48043 13.8946 1.29289 13.7071C1.10536 13.5196 1 13.2652 1 13V2C1 1.73478 1.10536 1.48043 1.29289 1.29289C1.48043 1.10536 1.73478 1 2 1H6.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path d='M10.5 1H14V4.5' strokeLinecap='round' strokeLinejoin='round' />
+      <path d='M14 1L7.5 7.5' strokeLinecap='round' strokeLinejoin='round' />
+    </>
+  ),
 };
 
 export default function IconComponents({ iconType, ...props }) {

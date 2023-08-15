@@ -126,7 +126,7 @@ function PostMain() {
 export default PostMain;
 const Foot = styled.div`
   position: fixed;
-  width: 428px;
+  width: 100%;
   bottom: 0;
 `;
 
@@ -139,7 +139,6 @@ const Head = styled.div`
   background-image: ${(props) => `url(${props.data?.thumbnailUrl})`};
   background-position: center;
   background-size: cover;
-
   height: 60%;
   padding: 57px 23px;
 `;
