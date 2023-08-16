@@ -68,7 +68,7 @@ function Signup() {
   }
 
   const passwordCheckHandler = (password, confirm) => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*\s)(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
     console.log("password", password); // TODO : 테스트 완료 후 삭제하기
     console.log("confirm", confirm);
     if (password === '') {
