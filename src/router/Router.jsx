@@ -10,7 +10,6 @@ import PostMain from '../pages/post/PostMain.jsx';
 import PostWrite from '../pages/post/PostWrite.jsx';
 import KakaoLoginRedirect from '../pages/kakao-login/KakaoLoginRedirect.jsx';
 import PasswordChange from '../pages/mypage/PasswordChange.jsx';
-import Post from '../pages/post/Post.jsx';
 import GroupEdit from '../pages/group/GroupEdit.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 
@@ -40,9 +39,6 @@ const Router = () => {
         </Route>
         <Route path='/pwchange' element={<ProtectedRoute />}>
           <Route index element={<PasswordChange />} />
-        </Route>
-        <Route path='/post' element={<ProtectedRoute />}>
-          <Route index element={<Post />} />
         </Route>
         <Route path='/groupedit/:id' element={<ProtectedRoute />}>
           <Route index element={<GroupEdit />} />
