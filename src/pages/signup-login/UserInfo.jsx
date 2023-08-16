@@ -34,6 +34,11 @@ const UserInfo = () => {
     }
   };
 
+  const alertAndNavigate = (message) => {
+    alert(message);
+    navigate('/login');
+  };
+
   const userInfoUploadHandler = async (e) => {
     e.preventDefault();
 
@@ -65,8 +70,7 @@ const UserInfo = () => {
         imageUrlFromCloud
       );
       if (responseData) {
-        alert('프로필 등록이 완료되었습니다!');
-        navigate('/groupmain');
+        alertAndNavigate('프로필 등록이 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)');
       } else {
         alert('프로필 등록에 실패하였습니다. 다시 시도해주세요.');
       }
@@ -120,7 +124,7 @@ const UserInfo = () => {
             등록하기
           </Button>
         </FormContainer>
-        <SkipButton type='button' onClick={() => navigate('/groupmain')}>
+        <SkipButton type='button' onClick={() => alertAndNavigate('회원가입은 완료되었습니다! 서비스를 이용하시려면 다시 로그인해주세요 :)')}>
           건너뛰기
         </SkipButton>
       </UserInfoContainer>

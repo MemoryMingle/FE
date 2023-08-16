@@ -2,7 +2,7 @@ import api from './index.jsx';
 
 export const login = async (loginId, password) => {
   const response = await api.post(
-    `/auth/login`,
+    '/auth/login',
     {
       loginId,
       password,
@@ -17,7 +17,7 @@ export const login = async (loginId, password) => {
 
 export const signup = async (loginId, password, confirm) => {
   const response = await api.post(
-    `/auth/signup`,
+    '/auth/signup',
     {
       loginId,
       password,
@@ -32,7 +32,7 @@ export const signup = async (loginId, password, confirm) => {
 };
 
 export const idDuplicateCheck = async (loginId) => {
-  const response = await api.post(`/auth/signup/check`, {
+  const response = await api.post('/auth/signup/check', {
     loginId,
   });
 
@@ -41,7 +41,7 @@ export const idDuplicateCheck = async (loginId) => {
 
 export const userInfoUpload = async (loginId, nickname, profileUrl) => {
   const response = await api.put(
-    `/auth/signup/update`,
+    '/auth/signup/update',
     {
       loginId,
       nickname,
@@ -56,7 +56,7 @@ export const userInfoUpload = async (loginId, nickname, profileUrl) => {
 };
 
 export const logout = async () => {
-  const response = await api.post(`/auth/logout`, {
+  const response = await api.post('/auth/logout', {
     withCredentials: true,
   });
 
