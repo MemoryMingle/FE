@@ -1,6 +1,6 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import api from '../api/index.jsx'
 
 function ProtectedRoute() {
   const [isLogin, setIsLogin] = useState(false);
@@ -9,7 +9,7 @@ function ProtectedRoute() {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const response = await api.get('/userInfo', {
+        const response = await axios.get(`${process.env.REACT_APP_URL}/userInfo`, {
           withCredentials: true,
         });
         console.log(response.data);
