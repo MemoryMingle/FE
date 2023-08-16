@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import Footer from '../../layout/footer/Footer.js';
-import api from '../../api/index.jsx';
+import Footer from '../../layout/footer/Footer';
+import useStickyMode from '../../hooks/useStickyMode.jsx';
+import IconComponents from '../../components/common/iconComponent/IconComponents.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
+import api from '../../api/index.jsx';
 
-function PostMain() {
-  const [scrolltop, setScrolltop] = useState(0);
+export default function PostMain() {
+  const stkicky = useStickyMode(115);
+  console.log(stkicky);
   const [data, setData] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -16,218 +19,205 @@ function PostMain() {
       setData(res.data);
     });
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolltop(window.scrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  const Header_Max_Height = 408;
-  const Header_Min_Height = 100;
-  const animateHeaderHeight =
-    scrolltop >= 307 ? Header_Min_Height : Header_Max_Height;
+  const processedPlace = data?.place
+    ? JSON.parse(data.place)
+        .map((item) => item.replace(/["]/g, ''))
+        .join(', ')
+    : '';
 
   return (
     <div style={{ position: 'relative' }}>
-      <div
-        style={{
-          height: animateHeaderHeight,
-          position: 'fixed',
-          background: '#C2C2C2',
-          width: '428px',
-          top: '0',
-          display: 'flex',
-          flexDirection: 'column',
-          transition: 'all ease 0.5s 0s',
-        }}
-      >
-        <Head scrolltop={scrolltop} data={data}>
-          <Icons>
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/svgs/VectorLeft.svg`}
-              alt='left'
-            />
-            <img src={`${process.env.PUBLIC_URL}/assets/svgs/Add.svg`} alt='add' />
-          </Icons>
+      <Wrap>
+        <Head $heady={stkicky}>
+          <IconComponents iconType='vectorLeft' stroke='white' />
+          {stkicky && <p>{data?.groupName}</p>}
+          <CamereButton onClick={() => navigate(`/postwrite/${id}`)}>
+            <IconComponents iconType='camera' stroke='white' />
+          </CamereButton>
         </Head>
-        <Side
-          style={{
-            display: scrolltop >= 307 ? 'none' : 'block',
-            background: 'white',
-            height: '40%',
-          }}
-        >
-          <MemoryName>
-            <MemoryNameLeft>
-              <span>{data?.groupName}</span>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/svgs/VectorRight.svg`}
-                alt='left'
-              />
-            </MemoryNameLeft>
-            <MemoryNameRight>
-              <img
-                src={`${process.env.PUBLIC_URL}/assets/svgs/AddFriend.svg`}
-                alt='left'
-              />
-              <span>친구초대</span>
-            </MemoryNameRight>
-          </MemoryName>
-          <Avatar>
-            <div>
-              <img src='' alt='' />
-              <span>Name</span>
-            </div>
-            <div>
-              <img src='' alt='' />
-              <span>Name</span>
-            </div>
-          </Avatar>
-          <Location>
-            <span>{data?.place}</span>
-            <span>
-              {data?.startDate.substr(0, 10)}-{data?.endDate.substr(0, 10)}
-            </span>
-          </Location>
-        </Side>
-      </div>
-
-      <WrapContent>
-        <Box onClick={() => navigate(`/postwrite/${id}`)}>
-          <img src={`${process.env.PUBLIC_URL}/assets/svgs/plus.svg`} alt='plus' />
-        </Box>
-        {data?.memories.map((e) => {
-          return (
-            <Box
-              onClick={() => navigate(`/postdetail/${e.memoryId}`)}
-              key={e.memoryId}
-            >
-              <img
-                src={e.imageUrl}
-                alt='rasm'
-                height={130}
-                style={{ width: '100%' }}
-              />
-            </Box>
-          );
-        })}
-      </WrapContent>
+        <div>
+          <CoverImage data={data}></CoverImage>
+          <Side>
+            <GroupTitle>
+              <Title>
+                <h3>{data?.groupName}</h3>
+                <IconComponents iconType='vectorRight' stroke='#787777' />
+              </Title>
+              <FriendAdd>
+                <IconComponents iconType='inviteFriends' stroke='#8E8E8E' />
+                <p>친구초대</p>
+              </FriendAdd>
+            </GroupTitle>
+            <DateLocation>
+              <WrapDate>
+                <IconComponents iconType='date' stroke='#8E8E8E' />
+                <p>
+                  {' '}
+                  {data?.startDate.substr(0, 10)}~{data?.endDate.substr(0, 10)}
+                </p>
+              </WrapDate>
+              <WrapLocation>
+                <IconComponents iconType='location' stroke='#8E8E8E' />
+                <p>{processedPlace}</p>
+              </WrapLocation>
+            </DateLocation>
+            <AvatarContainer>
+              {data?.participants.map((element) => {
+                return (
+                  <AvatarWrap key={element.userId}>
+                    <AvatarImage src={element.profileUrl} />
+                    <span>{element.nickname}</span>
+                  </AvatarWrap>
+                );
+              })}
+            </AvatarContainer>
+          </Side>
+          <Content>
+            {Array.from({ length: 1 }, (_, index) => (
+              <Box key={index} />
+            ))}
+          </Content>
+        </div>
+        <div style={{ height: '72px' }}></div>
+      </Wrap>
       <Foot>
         <Footer />
       </Foot>
     </div>
   );
 }
-
-export default PostMain;
-const Foot = styled.div`
-  position: fixed;
+const Wrap = styled.div`
   width: 100%;
-  bottom: 0;
+  position: relative;
+  height: 100vh;
 `;
-
-const Icons = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const Head = styled.div`
-  height: ${(props) => (props.scrolltop >= 307 ? 'none' : 'block')};
+const CoverImage = styled.div`
   background-image: ${(props) => `url(${props.data?.thumbnailUrl})`};
+  width: 100%;
+  height: 206px;
   background-position: center;
   background-size: cover;
-  height: 60%;
-  padding: 57px 23px;
 `;
-const Box = styled.div`
+
+const Head = styled.div`
   display: flex;
-  background: #d9d9d9;
-  align-items: center;
-  justify-content: center;
-  height: 130px;
-`;
-
-const WrapContent = styled.div`
-  margin-top: 25.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 2px;
-`;
-
-const Side = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-`;
-
-const MemoryName = styled.div`
-  display: flex;
+  color: white;
+  top: 0;
   justify-content: space-between;
+  padding: 58px 25px 7px 25px;
+  height: 93px;
+  position: fixed;
+  background: ${(props) => (props.$heady ? '#5873FE' : 'transparent')};
+  transition: all 0.2s;
+  @media (max-width: 428px) {
+    width: 100%;
+  }
+  @media (min-width: 429px) {
+    width: 428px;
+  }
+`;
+const CamereButton = styled.button`
+  border: none;
+  background: transparent;
+`;
+const Side = styled.div`
+  width: 100%;
+  height: 174px;
   padding: 18px 24px;
 `;
-
-const MemoryNameLeft = styled.div`
+const GroupTitle = styled.div`
   display: flex;
-  gap: 5px;
-  span {
-    color: #535353;
-    font-size: 16px;
+  justify-content: space-between;
+  align-items: center;
+`;
+const Title = styled.div`
+  display: flex;
+  gap: 12px;
+  h3 {
+    color: #4c4c4c;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+`;
+const FriendAdd = styled.div`
+  display: flex;
+  p {
+    color: #8e8e8e;
+    font-size: 12px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
   }
 `;
-
-const MemoryNameRight = styled.div`
+const DateLocation = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  span {
-    color: #a6a6a6;
-    font-size: 11px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-`;
-const Avatar = styled.div`
-  display: flex;
-  padding: 0px 22px 0px 22px;
-  gap: 17px;
-
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    text-align: center;
-  }
-  img {
-    width: 33px;
-    height: 33px;
-    border-radius: 50%;
-    background: #c1c1c1;
-  }
-  span {
-    color: #a6a6a6;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-  }
-`;
-const Location = styled.div`
-  display: flex;
-  padding: 15px 24px;
   flex-direction: column;
-  gap: 5px;
+  margin-top: 10px;
+`;
+const WrapDate = styled.div`
+  display: flex;
+  align-items: center;
+  p {
+    color: #666;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+`;
+const WrapLocation = styled.div`
+  display: flex;
+  align-items: center;
+  p {
+    color: #666;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+`;
+const AvatarContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+  gap: 12.5px;
+`;
+const AvatarWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5px;
+  align-items: center;
   span {
-    color: #a6a6a6;
+    color: #4c4c4c;
     font-size: 11px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     line-height: normal;
+  }
+`;
+const AvatarImage = styled.img`
+  width: 43px;
+  height: 43px;
+  border-radius: 50%;
+  background: black;
+`;
+const Content = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5px;
+`;
+const Box = styled.div`
+  height: 130px;
+  background: #555;
+`;
+const Foot = styled.div`
+  position: fixed;
+  bottom: 0;
+  @media (max-width: 428px) {
+    width: 100%;
+  }
+  @media (min-width: 429px) {
+    width: 428px;
   }
 `;

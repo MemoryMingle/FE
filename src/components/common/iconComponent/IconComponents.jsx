@@ -173,6 +173,76 @@ const icons = {
       <path d='M14 1L7.5 7.5' strokeLinecap='round' strokeLinejoin='round' />
     </>
   ),
+  location: (
+    <>
+      <path
+        d='M14.1538 7.57692C14.1538 11.2162 7.57692 20 7.57692 20C7.57692 20 1 11.2162 1 7.57692C1 5.83261 1.69292 4.15975 2.92634 2.92634C4.15975 1.69292 5.83261 1 7.57692 1C9.32123 1 10.9941 1.69292 12.2275 2.92634C13.4609 4.15975 14.1538 5.83261 14.1538 7.57692Z'
+        fill='#9C9C9C'
+        strokeWidth='1.46154'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M7.57707 9.76938C8.78785 9.76938 9.76938 8.78785 9.76938 7.57707C9.76938 6.3663 8.78785 5.38477 7.57707 5.38477C6.3663 5.38477 5.38477 6.3663 5.38477 7.57707C5.38477 8.78785 6.3663 9.76938 7.57707 9.76938Z'
+        fill='white'
+        stroke='white'
+        strokeWidth='1.46154'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </>
+  ),
+  date: (
+    <>
+      <path
+        d='M2.26812 3.55812C1.91992 3.55812 1.63075 3.69643 1.38454 3.94264C1.13832 4.18886 1 4.5228 1 4.871V16.6871C1 17.0353 1.13832 17.3692 1.38454 17.6154C1.63075 17.8616 1.96469 18 2.3129 18H16.7547C17.103 18 17.4369 17.8616 17.6831 17.6154C17.9293 17.3692 18.0676 17.0353 18.0676 16.6871V4.871C18.0676 4.5228 17.9293 4.18886 17.6831 3.94264C17.4369 3.69643 17.103 3.55811 16.7547 3.55811H14.129'
+        fill='#9C9C9C'
+      />
+      <path
+        d='M2.26812 3.55812C1.91992 3.55812 1.63075 3.69643 1.38454 3.94264C1.13832 4.18886 1 4.5228 1 4.871V16.6871C1 17.0353 1.13832 17.3692 1.38454 17.6154C1.63075 17.8616 1.96469 18 2.3129 18H16.7547C17.103 18 17.4369 17.8616 17.6831 17.6154C17.9293 17.3692 18.0676 17.0353 18.0676 16.6871V4.871C18.0676 4.5228 17.9293 4.18886 17.6831 3.94264C17.4369 3.69643 17.103 3.55811 16.7547 3.55811H14.129'
+        strokeWidth='1.3129'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M2.42188 3.84473H14.7485'
+        strokeWidth='1.8964'
+        strokeLinecap='round'
+      />
+      <path
+        d='M4.93945 1V6.25158'
+        strokeWidth='1.3129'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M14.1289 1V6.25158'
+        strokeWidth='1.3129'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M4.93945 3.62549H11.5039'
+        strokeWidth='1.3129'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M12.8164 13.4727H6.25195'
+        stroke='white'
+        strokeWidth='1.3129'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M1 8.58545H18.0676'
+        stroke='white'
+        strokeWidth='1.3129'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </>
+  ),
 };
 
 export default function IconComponents({ iconType, ...props }) {
