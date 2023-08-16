@@ -38,11 +38,8 @@ const Title = styled.h1`
     width: 100%;
     text-align: center;
     color: #4C4C4C;
-    font-family: Apple SD Gothic Neo;
-    font-size: 1rem;
-    font-style: normal;
+    font-size: 16px;
     font-weight: 600;
-    line-height: normal;
 `;
 
 Header.propTypes = {

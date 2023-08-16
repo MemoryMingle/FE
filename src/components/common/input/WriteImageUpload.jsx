@@ -2,14 +2,14 @@ import React from 'react';
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
-function WriteImageUpload({ height, bgcolor, children, onImageChange }) {
+function WriteImageUpload({ height, bgcolor, children, onImageChange ,color}) {
   return (
     <>
-      <ThumbnailLabel htmlFor='imageUpload' height={height} bgcolor={bgcolor}>
+      <ThumbnailLabel htmlFor='imageUpload' height={height} bgcolor={bgcolor} color={color}>
         <img
           src={`${process.env.PUBLIC_URL}/assets/image/photo.png`}
           alt='thumbnail'
-        />
+        /> 
         <p>{children}</p>
       </ThumbnailLabel>
       <ThumbNail id='imageUpload' onChange={onImageChange} />
@@ -38,7 +38,7 @@ const ThumbnailLabel = styled.label`
   }
 
   p {
-    color: white;
+    color: ${(prop) => prop.color? prop.color : "white"};
     font-size: 16px;
     font-weight: 600;
   }
@@ -65,6 +65,7 @@ WriteImageUpload.propTypes = {
     PropTypes.string,
   ]),
   onImageChange: PropTypes.func,
+  color: PropTypes.string
 };
 
 export default WriteImageUpload;

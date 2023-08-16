@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { css, keyframes, styled } from 'styled-components';
+import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
 import { uploadImage } from '../../hooks/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
-import PropTypes from 'prop-types';
 import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
+import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
 
 function GroupWrite() {
   const [groupName, setGroupName] = useState('');
@@ -195,13 +195,14 @@ function GroupWrite() {
                 height='20vh'
                 onImageChange={imageHandler}
                 bgcolor='rgba(245, 246, 248, 1)'
+                color="#BDBDBD"
               >
                 썸네일 추가하기
               </WriteImageUpload>
             )}
           </WriteImageWrapper>
           <StDateWrapper>
-          <DivHeaderText>함께한 추억 기간 </DivHeaderText>
+            <DivHeaderText>함께한 추억 기간 </DivHeaderText>
             <Space
               direction='vertical'
               size={12}
@@ -255,7 +256,7 @@ function GroupWrite() {
             ))}
           </PlaceContainer>
           <div style={{ width: '100%' }}>
-          <DivHeaderText>함께한 친구들 </DivHeaderText>
+            <DivHeaderText>함께한 친구들 </DivHeaderText>
             <FriendSearchButton onClick={() => setModalOpen(!isModalOpen)}>
               <FriendContentWrap>
                 <FriendSearchImage
@@ -313,7 +314,7 @@ const DivHeaderText = styled.p`
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
-  color: #4C4C4C;
+  color: #4c4c4c;
 `;
 
 const SelectFrindWrapper = styled.div`
@@ -379,6 +380,12 @@ const GroupWriteInput = styled.input`
 
   &:focus {
     outline: none;
+  }
+  &::placeholder {
+    color: #c2c2c2;
+    font-size: 15px;
+    font-style: normal;
+    line-height: normal;
   }
 `;
 const PlaceContainer = styled.div`
@@ -504,160 +511,3 @@ const FriendSearchText = styled.p`
   color: #c2c2c2;
 `;
 
-// Modal Logic
-
-function FriendSearchModal({
-  onClose,
-  isopen,
-  universalHandler,
-  searchResult,
-  addFriendHandler,
-  isUserSelected,
-  participants,
-}) {
-  return (
-    <ModalContainer isOpen={isopen}>
-      <ModalButtonWrapper>
-        <ModalButton onClick={onClose}>
-          <img src={`${process.env.PUBLIC_URL}/assets/image/line.png`} alt='line' />
-        </ModalButton>
-      </ModalButtonWrapper>
-      <div style={{ position: 'fix' }}>
-        <ModalWriteInput
-          name='participants'
-          placeholder='친구 아이디'
-          value={participants}
-          onChange={universalHandler}
-        />
-      </div>
-
-      {searchResult
-        .filter((item) => !isUserSelected(item.loginId))
-        .map((item) => {
-          return (
-            <ResultWrapper key={item.userId}>
-              <ResultProfileImage src={item.profileUrl} alt='profileImg' />
-              <div>
-                <p>{item.loginId} </p>
-                <p>{item.nickname} </p>
-              </div>
-              <ResultAddButton
-                onClick={() => {
-                  addFriendHandler(item);
-                  onClose();
-                }}
-              >
-                {' '}
-                추가
-              </ResultAddButton>
-            </ResultWrapper>
-          );
-        })}
-    </ModalContainer>
-  );
-}
-
-const ResultWrapper = styled.div`
-  width: 100%;
-  height: 60px;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  justify-content: space-between;
-`;
-
-const ResultProfileImage = styled.img`
-  width: 54px;
-  height: 54px;
-  border-radius: 100%;
-  object-fit: cover;
-`;
-
-const ResultAddButton = styled.button`
-  width: 75px;
-  height: 28px;
-  border: none;
-  color: white;
-  background-color: rgba(88, 115, 254, 1);
-  border-radius: 12px;
-`;
-
-const ModalContainer = styled.div`
-  position: fixed;
-  width: 100%;
-  left: 0;
-  right: 0;
-  bottom: ${({ isOpen }) => (isOpen ? '-9%' : '-100%')};
-  background-color: #fff;
-  padding: 1rem;
-  z-index: 10;
-  transition: bottom 0.4s ease-out;
-  animation: ${({ isOpen }) =>
-    isOpen
-      ? css`
-          ${slideUp} 0.8s
-        `
-      : css`
-          ${slideDown} 1s
-        `};
-  height: 100%;
-  border-radius: 30px;
-  box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
-  overflow: scroll;
-`;
-
-const slideUp = keyframes`
-  0% {
-    bottom: -100%;
-  }
-  100% {
-    bottom: -9%;
-  }
-  `;
-
-const slideDown = keyframes`
-  from {
-    bottom: -9%;
-  }
-  to {
-    bottom: -100%;
-  }
-  `;
-
-const ModalButton = styled.button`
-  border: none;
-  background-color: transparent;
-  align-items: center;
-`;
-
-const ModalButtonWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalWriteInput = styled.input`
-  width: 100%;
-  height: 44px;
-  padding-right: 50px;
-  border-radius: 7px;
-  background-color: #f5f5f5;
-  border: none;
-  margin-top: 25px;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-FriendSearchModal.propTypes = {
-  onClose: PropTypes.func,
-  isopen: PropTypes.bool,
-  universalHandler: PropTypes.func,
-  searchResult: PropTypes.array,
-  addFriendHandler: PropTypes.func,
-  isUserSelected: PropTypes.func,
-  participants: PropTypes.array,
-};

@@ -38,13 +38,13 @@ function Signup() {
   }
 
   const idCheckHandler = async (id) => {
-    const idRegex = /^[a-z\d]{5,10}$/;
+    const idRegex = /^[a-zA-Z\d]{5,20}$/;
     if (id === '') {
       setIdError('아이디를 입력해주세요.');
       setIsIdAvailable(false);
       return false;
     } else if (!idRegex.test(id)) {
-      setIdError('아이디는 5~10자의 영소문자, 숫자만 입력 가능합니다.');
+      setIdError('아이디는 5~20자의 영문, 숫자만 사용 가능합니다.');
       setIsIdAvailable(false);
       return false;
     }
@@ -68,14 +68,14 @@ function Signup() {
   }
 
   const passwordCheckHandler = (password, confirm) => {
-    const passwordRegex = /^[a-z\d!@*&-_]{8,16}$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])(?!.*[^a-zA-Z\d!@#$%^&*]).{8,16}$/;
     console.log("password", password); // TODO : 테스트 완료 후 삭제하기
     console.log("confirm", confirm);
     if (password === '') {
       setPasswordError('비밀번호를 입력해주세요.');
       return false;
     } else if (!passwordRegex.test(password)) {
-      setPasswordError('비밀번호는 8~16자의 영소문자, 숫자, !@*&-_만 입력 가능합니다.');
+      setPasswordError('비밀번호는 8~16자의 영문, 숫자, 특수문자(!@#$%^&*)를 모두 포함하여야 합니다.');
       return false;
     } else if (confirm !== password) {
       setPasswordError('');
@@ -132,7 +132,7 @@ function Signup() {
                 value={id}
                 placeholder='아이디 입력'
                 theme='underLine'
-                maxLength={10}
+                maxLength={20}
               />
               {idError && <small className={isIdAvailable ? 'idAvailable' : ''}>{idError}</small>}
             </InputContainer>
@@ -217,22 +217,16 @@ const InputContainer = styled.div`
     align-self: flex-start;
     text-align: left;
     color: #5873FE;
-    font-family: Apple SD Gothic Neo;
-    font-size: 1rem;
-    font-style: normal;
+    font-size: 16px;
     font-weight: 700;
-    line-height: normal;
   }
 
   small {
     align-self: flex-start;
     text-align: left;
-    font-size: 0.8rem;
+    font-size: 13px;
     color: #FF7E62;
-    font-family: Apple SD Gothic Neo;
-    font-style: normal;
     font-weight: 600;
-    line-height: normal;
   }
 
   .idAvailable {
@@ -249,10 +243,6 @@ const ButtonContainer = styled.div`
   bottom: 8vh;
   
   button {
-    font-family: Apple SD Gothic Neo;
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
   }
 `;

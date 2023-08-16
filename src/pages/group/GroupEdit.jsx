@@ -1,28 +1,52 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { css, keyframes, styled } from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { styled } from 'styled-components';
 import api from '../../api/index.jsx';
 import { uploadImage } from '../../hooks/uploadImage.js';
 import WriteImageUpload from '../../components/common/input/WriteImageUpload.jsx';
-import PropTypes from 'prop-types';
 import { DatePicker, Space } from 'antd';
 import Input from '../../components/common/input/Input.jsx';
+import moment from 'moment';
+import FriendSearchModal from '../../components/common/modal/NicknameModal.jsx';
+
 
 function GroupWrite() {
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    useEffect(() => {
+        console.log(id);
+        api.get(`group/${id}`, { withCredentials: true }).then((res) => {
+            console.log(res.data);
+            setGroupName(res.data.groupName);
+            setStartDate(res.data.startDate);
+            setEndDate(res.data.endDate);
+            setSelectedFriends(res.data.participants);
+            setThumbnailUrl(res.data.thumbnailUrl);
+            if(res.data.place) {
+                const placesArray = JSON.parse(res.data.place);
+                setPlaces(placesArray); 
+            }
+        });
+    }, []);
+    
+
+
+
   const [groupName, setGroupName] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
-  const [chosenFile, setChosenFile] = useState(null);
   const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
   const [participants, setParticipant] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const [selectedFriends, setSelectedFriends] = useState([]);
-
+  
+  const [chosenFile, setChosenFile] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
+  console.log(places)
   const { RangePicker } = DatePicker;
   const onChange = (value, dateString) => {
     setStartDate(dateString[0]);
@@ -63,7 +87,6 @@ function GroupWrite() {
     if (chosenFile) {
       imageUrlFromCloud = await uploadImage(chosenFile);
     }
-    console.log('url', imageUrlFromCloud);
     const payload = {
       groupName: groupName,
       thumbnailUrl: imageUrlFromCloud,
@@ -74,7 +97,7 @@ function GroupWrite() {
     };
 
     try {
-      const response = await api.post('/group', payload, {
+      const response = await api.put(`group/${id}`, payload, {
         withCredentials: true,
       });
       console.log(response.data);
@@ -124,7 +147,6 @@ function GroupWrite() {
     );
   };
 
-  const navigate = useNavigate();
   const backButtonHandler = () => {
     navigate('/groupmain');
   };
@@ -155,6 +177,8 @@ function GroupWrite() {
     return selectedFriends.some((friend) => friend.loginId === loginId);
   };
 
+  
+
   return (
     <>
       <Form onSubmit={submitHandler}>
@@ -167,9 +191,9 @@ function GroupWrite() {
               />
             </BackButton>
           </div>
-          <div>앨범 만들기</div>
+          <div>앨범 수정하기</div>
           <div>
-            <SubmitButton type='submit'>확인</SubmitButton>
+            <SubmitButton type='submit'>완료</SubmitButton>
           </div>
         </WriteHeader>
 
@@ -182,7 +206,6 @@ function GroupWrite() {
             value={groupName}
             placeholder='앨범 이름을 입력해주세요'
             onChange={universalHandler}
-            required
           />
           <WriteImageWrapper>
             {thumbnailUrl ? (
@@ -202,25 +225,29 @@ function GroupWrite() {
           </WriteImageWrapper>
           <StDateWrapper>
           <DivHeaderText>함께한 추억 기간 </DivHeaderText>
-            <Space
-              direction='vertical'
-              size={12}
-              style={{
-                width: '100%',
-              }}
-            >
-              <RangePicker
-                showTime={{}}
-                format='YYYY-MM-DD'
-                onChange={onChange}
-                style={{
-                  width: '100%',
-                  height: '44px',
-                  backgroundColor: '#F5F5F5',
-                  border: 'none',
-                }}
-              />
-            </Space>
+          <Space
+      direction='vertical'
+      size={12}
+      style={{
+        width: '100%',
+      }}
+    >
+     <RangePicker
+      showTime={{}}
+      format='YYYY-MM-DD'
+      onChange={onChange}
+      style={{
+        width: '100%',
+        height: '44px',
+        backgroundColor: '#F5F5F5',
+        border: 'none',
+      }}
+      placeholder={[
+        moment(startDate).format('YYYY-MM-DD'), 
+        moment(endDate).format('YYYY-MM-DD')
+      ]}
+    />
+    </Space>
           </StDateWrapper>
           <PlaceContainer>
             <DivHeaderText>함께한 추억 장소</DivHeaderText>
@@ -503,161 +530,3 @@ const FriendSearchText = styled.p`
   line-height: normal;
   color: #c2c2c2;
 `;
-
-// Modal Logic
-
-function FriendSearchModal({
-  onClose,
-  isopen,
-  universalHandler,
-  searchResult,
-  addFriendHandler,
-  isUserSelected,
-  participants,
-}) {
-  return (
-    <ModalContainer isOpen={isopen}>
-      <ModalButtonWrapper>
-        <ModalButton onClick={onClose}>
-          <img src={`${process.env.PUBLIC_URL}/assets/image/line.png`} alt='line' />
-        </ModalButton>
-      </ModalButtonWrapper>
-      <div style={{ position: 'fix' }}>
-        <ModalWriteInput
-          name='participants'
-          placeholder='친구 아이디'
-          value={participants}
-          onChange={universalHandler}
-        />
-      </div>
-
-      {searchResult
-        .filter((item) => !isUserSelected(item.loginId))
-        .map((item) => {
-          return (
-            <ResultWrapper key={item.userId}>
-              <ResultProfileImage src={item.profileUrl} alt='profileImg' />
-              <div>
-                <p>{item.loginId} </p>
-                <p>{item.nickname} </p>
-              </div>
-              <ResultAddButton
-                onClick={() => {
-                  addFriendHandler(item);
-                  onClose();
-                }}
-              >
-                {' '}
-                추가
-              </ResultAddButton>
-            </ResultWrapper>
-          );
-        })}
-    </ModalContainer>
-  );
-}
-
-const ResultWrapper = styled.div`
-  width: 100%;
-  height: 60px;
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  padding: 5px;
-  justify-content: space-between;
-`;
-
-const ResultProfileImage = styled.img`
-  width: 54px;
-  height: 54px;
-  border-radius: 100%;
-  object-fit: cover;
-`;
-
-const ResultAddButton = styled.button`
-  width: 75px;
-  height: 28px;
-  border: none;
-  color: white;
-  background-color: rgba(88, 115, 254, 1);
-  border-radius: 12px;
-`;
-
-const ModalContainer = styled.div`
-  position: fixed;
-  width: 100%;
-  left: 0;
-  right: 0;
-  bottom: ${({ isOpen }) => (isOpen ? '-9%' : '-100%')};
-  background-color: #fff;
-  padding: 1rem;
-  z-index: 10;
-  transition: bottom 0.4s ease-out;
-  animation: ${({ isOpen }) =>
-    isOpen
-      ? css`
-          ${slideUp} 0.8s
-        `
-      : css`
-          ${slideDown} 1s
-        `};
-  height: 100%;
-  border-radius: 30px;
-  box-shadow: 0px -10px 14px 0px rgba(199, 199, 199, 0.25);
-  overflow: scroll;
-`;
-
-const slideUp = keyframes`
-  0% {
-    bottom: -100%;
-  }
-  100% {
-    bottom: -9%;
-  }
-  `;
-
-const slideDown = keyframes`
-  from {
-    bottom: -9%;
-  }
-  to {
-    bottom: -100%;
-  }
-  `;
-
-const ModalButton = styled.button`
-  border: none;
-  background-color: transparent;
-  align-items: center;
-`;
-
-const ModalButtonWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ModalWriteInput = styled.input`
-  width: 100%;
-  height: 44px;
-  padding-right: 50px;
-  border-radius: 7px;
-  background-color: #f5f5f5;
-  border: none;
-  margin-top: 25px;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
-FriendSearchModal.propTypes = {
-  onClose: PropTypes.func,
-  isopen: PropTypes.bool,
-  universalHandler: PropTypes.func,
-  searchResult: PropTypes.array,
-  addFriendHandler: PropTypes.func,
-  isUserSelected: PropTypes.func,
-  participants: PropTypes.array,
-};

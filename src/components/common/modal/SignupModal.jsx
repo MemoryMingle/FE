@@ -84,16 +84,14 @@ const TextContainer = styled.div`
     text-align: center;
     flex-direction: column;
     color: #4C4C4C;
-    font-family: Apple SD Gothic Neo;
-    font-style: normal;
     line-height: 129.336%;
     h2 {
         margin-bottom: 2rem;
-        font-size: 1.5rem;
+        font-size: 24px;
         font-weight: 700;
     }
     p {
-        font-size: 1rem;
+        font-size: 16px;
         font-weight: 500;
     }
 `;
@@ -106,10 +104,6 @@ const ButtonContainer = styled.div`
     width: 100%;
     button {
         width: 100%;
-        font-family: Apple SD Gothic Neo;
-        font-size: 16px;
-        font-style: normal;
         font-weight: 700;
-        line-height: normal;
     }
 `;

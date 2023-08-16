@@ -36,7 +36,6 @@ function Login() {
     try {
       const responseData = await login(id, password);
       if (responseData) {
-        alert('로그인 성공'); // TODO : 테스트 완료 후 삭제하기
         navigate('/groupmain');
       } else {
         alert('아이디 또는 비밀번호를 다시 확인해주세요.');
@@ -129,11 +128,8 @@ const InputContainer = styled.div`
     margin-left: 5vw;
     margin-right: 5vw;
     color: #FF7E62;
-    font-family: Apple SD Gothic Neo;
-    font-size: 0.8125rem;
-    font-style: normal;
+    font-size: 13px;
     font-weight: 600;
-    line-height: normal;
   }
 `;
 
@@ -146,11 +142,7 @@ const ButtonContainer = styled.div`
   bottom: -6vh;
   
   button {
-    font-family: Apple SD Gothic Neo;
-    font-size: 16px;
-    font-style: normal;
     font-weight: 700;
-    line-height: normal;
   }
 `;
 
@@ -168,9 +160,6 @@ const LinkStyle = styled(Link)`
   //margin-right: 0.625rem;
   color: #FFF;
   text-align: center;
-  font-family: Apple SD Gothic Neo;
-  font-size: 0.9375rem;
-  font-style: normal;
+  font-size: 15px;
   font-weight: 500;
-  line-height: normal;
 `;

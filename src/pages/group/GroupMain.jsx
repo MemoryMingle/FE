@@ -65,24 +65,24 @@ function GroupMain() {
 
                 return (
                   <ButtonWrapper key={item.groupId}>
-                    <button onClick={() => navigate(`/groupedit/${item.groupId}`)}>수정하기</button>
-                    <button
+                    <GroupEditButton
+                      onClick={() => navigate(`/groupedit/${item.groupId}`)}
+                    >
+                      <EditIcon
+                        src={`${process.env.PUBLIC_URL}/assets/svgs/iconedit.svg`}
+                        alt='editicon'
+                      />
+                    </GroupEditButton>
+                    <GroupDetailButton
                       onClick={() => navigate(`/postmain/${item.groupId}`)}
-                      style={{
-                        width: '100%',
-                        height: '170px',
-                        border: 'none',
-                        borderRadius: '12px',
-                      }}
-                    > <img src={item.thumbnailUrl} alt='cover'
-                    style={{
-                      width:'100%'
-                    }}
-                    /></button>
+                    >
+                      {' '}
+                      <ThumbNaiilImage src={item.thumbnailUrl} alt='cover' />
+                    </GroupDetailButton>
                     <div
                       style={{
                         lineHeight: '1px',
-                        paddingLeft: '12px',
+                        paddingLeft: '2px',
                         marginTop: '12px',
                       }}
                     >
@@ -113,6 +113,32 @@ function GroupMain() {
 
 export default GroupMain;
 
+const GroupEditButton = styled.button`
+  position: absolute;
+  right: 10px;
+  top: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+`;
+
+const GroupDetailButton = styled.button`
+  width: 100%;
+  height: 170px;
+  border-radius: 12px;
+  border: none;
+`;
+
+const EditIcon = styled.img`
+  width: 8px;
+  height: 23px;
+`;
+const ThumbNaiilImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+`;
+
 //container and wrapper
 const MainContainer = styled.div`
   display: flex;
@@ -134,6 +160,7 @@ const ButtonWrapper = styled.div`
   padding-bottom: 24px;
   cursor: pointer;
   margin-left: 24px;
+  position: relative;
 `;
 
 //styled
