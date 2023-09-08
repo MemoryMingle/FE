@@ -35,7 +35,6 @@ export default function PostMain() {
   const closeModal = () => {
     setIsOpen(false);
   };
-  console.log(data);
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error fetching data</div>;
 

@@ -113,7 +113,8 @@ const EditInput = styled.input`
   border-top: none;
   border-left: none;
   border-right: none;
-  width: 240px;
+  padding-right: 25px;
+  width: 200px;
   border-bottom: 0.1px solid #6666;
   color: #4c4c4c;
   font-size: 14px;
@@ -122,9 +123,13 @@ const EditInput = styled.input`
   line-height: normal;
   outline: none;
 `;
-const EditInputWrap = styled.div``;
+const EditInputWrap = styled.div`
+  position: relative;
+`;
 const BTN = styled.button`
   margin-left: 8px;
+  position: absolute;
+  right: 0;
   border: none;
   outline: none;
   background: transparent;
